@@ -10,23 +10,33 @@ Refinery is an independent verification and validation engine for AI-modified CO
 
 ### 1. IBM Bob modifies the COBOL
 
-Bob optimises, refactors, or fixes a COBOL program directly in the IDE. Refinery intercepts the change the moment Bob is done.
+Bob optimises, refactors, or fixes a COBOL program directly in the IDE. The moment Bob completes a task, Refinery intercepts the change and runs its audit pipeline. If the change is unsafe, Refinery surfaces the verdict immediately — the **FLAGGED — risk score 100/100** banner appears inline so Bob and the developer see it before anything ships.
 
-![IBM Bob IDE session showing COBOL modification](images/Screenshot%202026-05-16%20213219.png)
+![IBM Bob IDE session — Refinery flags a risky change in real time](images/Screenshot%202026-05-16%20213031.png)
 
 ### 2. Refinery audits the change
 
 8 verification layers run automatically: arithmetic equivalence, data types, control flow, memory layout, call graph, compiled output, error paths, and I/O behaviour. Every flagged change gets a risk score and a signed PDF change contract.
 
-### 3. CRO Governance Dashboard
+### 3. The feedback loop — Bob learns from every rejection
+
+Every FLAGGED verdict and every CRO rejection is written back into Bob's RAG knowledge base. The next time Bob touches the same program or a similar pattern, it has the full history of what failed and why:
+
+- **What Bob changed** — the exact transformation that was flagged
+- **Why Refinery rejected it** — which of the 8 layers caught the drift and what the semantic difference was
+- **Why the CRO rejected it** — the stated reason from the sign-off modal (e.g. "data type boundary violated on COMP-3 field", "blast radius exceeds threshold without mitigation plan")
+
+This means Bob gets progressively safer over time on your specific estate — it is not a generic model but one that has been calibrated against your organisation's actual compliance failures.
+
+### 4. CRO Governance Dashboard
 
 Every audit lands in the governance portal. The Chief Risk Officer sees a live feed of all changes, verdicts, blast radius scores, and sign-off status.
 
 ![Refinery CRO Governance Portal — Audit Dashboard](images/Screenshot%202026-05-16%20213315.png)
 
-### 4. CRO Sign-off
+### 5. CRO Sign-off
 
-When blast radius exceeds the threshold, the CRO must approve before the change can ship. The sign-off is immutable — the record locks once submitted.
+When blast radius exceeds the threshold, the CRO must approve before the change can ship. The sign-off is immutable — the record locks once submitted. The reason given by the CRO is fed back into Bob's knowledge base so future changes avoid the same failure mode.
 
 ![CRO Sign-off modal — blast radius 33, 3 systems affected](images/Screenshot%202026-05-16%20213328.png)
 
@@ -63,6 +73,7 @@ uv run python mcp_server.py
 ```
 audit/          8-layer verification engine
 bob/            IBM Bob integration (narrator, RAG, providers)
+  bob/rag/      Knowledge base — stores past failures and CRO rejections
 estate/         Blast radius analyser — traces cross-system impact
 parser/         COBOL AST parser
 emulator/       Synthetic COBOL execution runner
@@ -78,6 +89,7 @@ mcp_server.py   MCP server for Bob IDE integration
 - tree-sitter for COBOL AST parsing
 - WeasyPrint for PDF change contracts
 - SQLite for governance audit trail
+- RAG (retrieval-augmented generation) for Bob's compliance memory
 
 ---
 
