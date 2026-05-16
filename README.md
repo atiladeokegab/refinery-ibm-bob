@@ -61,18 +61,13 @@ Eight checks run: arithmetic equivalence, data types, control flow, memory layou
 
 ### Blast radius
 
-Knowing a change is semantically correct is not enough. A COBOL estate is not a collection of isolated programs — one file can be called by dozens of batch jobs, shared via copybooks, and write to VSAM datasets that other programs read. A safe change to one program can still break fourteen others.
+A change can pass all eight verification checks and still break something. One COBOL program is rarely just one COBOL program. It gets called by batch jobs, its copybooks are shared with siblings, it writes to VSAM datasets that other programs read. The code is fine. The system is not.
 
-Refinery traces every `CALL`, `COPY`, `ASSIGN TO`, JCL `EXEC PGM`, and `DSN` reference to build a dependency graph of the estate before anything ships. The result is a blast radius score from 0 to 100. Anything above 50 requires CRO sign-off.
+Refinery traces every `CALL`, `COPY`, `ASSIGN TO`, JCL `EXEC PGM`, and `DSN` reference across the estate and scores the result from 0 to 100. Above 50, the CRO must sign off before anything ships.
 
-What the score covers:
+Four things go into the score: programs that directly call the changed module, programs sharing the same copybook (a layout mismatch here causes field offset errors that tend to surface days later in production), programs reading or writing the same VSAM datasets, and JCL batch jobs that execute the changed program.
 
-- Direct callers — programs that `CALL` the changed module
-- Copybook siblings — programs sharing the same copybook layout (mismatched field offsets are a common failure mode)
-- VSAM co-accessors — programs reading or writing the same datasets
-- Batch jobs at risk — JCL jobs that execute the changed program
-
-This is where IBM Bob's full repo view matters. Bob sees the whole estate, not just the file being changed. Refinery uses that context to make the blast radius accurate.
+The reason this works is IBM Bob's full repo view. Most analysis tools look at one file. Bob ingests the whole repository, so Refinery can trace dependencies that would be invisible from a single file's context. The blast radius score reflects the actual estate, not an approximation of it.
 
 ### The feedback loop
 
