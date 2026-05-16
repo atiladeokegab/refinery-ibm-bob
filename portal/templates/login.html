@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 62px);">
+  <div style="width:360px;">
+    <h1 style="font-family:'IBM Plex Serif',serif;font-style:italic;margin-bottom:8px;">Sign in</h1>
+    <p style="color:#6E6B64;font-size:13px;margin-bottom:28px;">Refinery Governance Portal</p>
+    <form id="login-form">
+      <div style="margin-bottom:16px;">
+        <label style="font-size:12px;font-weight:500;display:block;margin-bottom:6px;">Username</label>
+        <input id="username" type="text" style="width:100%;border:1px solid #E6E3DA;border-radius:3px;padding:8px 12px;font-size:13px;background:#fff;" placeholder="admin">
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="font-size:12px;font-weight:500;display:block;margin-bottom:6px;">Password</label>
+        <input id="password" type="password" style="width:100%;border:1px solid #E6E3DA;border-radius:3px;padding:8px 12px;font-size:13px;background:#fff;">
+      </div>
+      <button type="submit" style="width:100%;background:#111110;color:#FDFCF7;border:none;border-radius:3px;padding:10px;font-size:13px;font-weight:500;cursor:pointer;">Sign in</button>
+      <p id="login-error" style="color:#C0392B;font-size:12px;margin-top:10px;display:none;"></p>
+    </form>
+  </div>
+</div>
+<script>
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const resp = await fetch('/api/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({username: document.getElementById('username').value, password: document.getElementById('password').value}),
+  });
+  if (resp.ok) {
+    const data = await resp.json();
+    localStorage.setItem('refinery_token', data.token);
+    localStorage.setItem('refinery_user', data.user);
+    window.location.href = '/';
+  } else {
+    const err = document.getElementById('login-error');
+    err.textContent = 'Invalid credentials.';
+    err.style.display = 'block';
+  }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,21 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. STRESSTEST.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-OUTER-CTR    PIC 9(4) VALUE ZEROS.
+       01 WS-J            PIC 9(4) VALUE ZEROS.
+       01 WS-MATH-1       PIC 9(10)V99 VALUE ZEROS.
+       01 WS-MATH-2       PIC 9(10)V99 VALUE ZEROS.
+       01 WS-RESULT       PIC 9(12)V99 VALUE ZEROS.
+       PROCEDURE DIVISION.
+       000-MAIN.
+           PERFORM 100-OUTER 1000 TIMES.
+           STOP RUN.
+       100-OUTER.
+           MOVE 0 TO WS-J.
+           PERFORM 200-INNER 50 TIMES.
+       200-INNER.
+           ADD 1 TO WS-J.
+           COMPUTE WS-MATH-1 = (WS-J * 1.05) + (WS-J / 0.95).
+           COMPUTE WS-MATH-2 = WS-MATH-1 * WS-MATH-1.
+           ADD WS-MATH-2 TO WS-RESULT.

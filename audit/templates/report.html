@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Refinery IV&amp;V &#8212; {{ result.ref_id }}</title>
+<style>
+@page {
+  size: A4;
+  margin: 2.5cm 2.2cm 2.8cm 2.2cm;
+  @bottom-center {
+    content: "CONFIDENTIAL &#8212; REFINERY IV&V &#8212; " counter(page) " / " counter(pages);
+    font-size: 7pt;
+    color: #aaa;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    letter-spacing: 1pt;
+  }
+}
+@page :first { margin: 0; }
+
+body { font-family: Georgia, 'Times New Roman', serif; font-size: 10.5pt; color: #1a1a1a; line-height: 1.65; margin: 0; }
+
+/* Cover */
+.cover {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 100vh; text-align: center;
+  background: #0f0f0f; color: #fff;
+  break-after: page; padding: 2cm;
+}
+.cover-wordmark { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11pt; letter-spacing: 6pt; text-transform: uppercase; color: #666; margin-bottom: 48pt; }
+.cover-program { font-family: 'Courier New', monospace; font-size: 22pt; font-weight: bold; margin-bottom: 6pt; }
+.cover-subtitle { font-size: 11pt; color: #aaa; margin-bottom: 40pt; }
+.cover-meta { font-size: 9pt; letter-spacing: 1.5pt; text-transform: uppercase; color: #555; line-height: 2.2; }
+.cover-badge {
+  display: inline-block; margin-top: 36pt; padding: 8pt 24pt;
+  font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10pt; font-weight: 700;
+  letter-spacing: 2pt; text-transform: uppercase; border: 1.5pt solid;
+}
+.cover-badge.pass { color: #4caf50; border-color: #4caf50; }
+.cover-badge.flagged { color: #ef5350; border-color: #ef5350; }
+
+/* Body */
+h2 {
+  font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 9pt; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2pt; color: #1a1a1a;
+  border-bottom: 1.5pt solid #1a1a1a; padding-bottom: 4pt; margin-top: 30pt; margin-bottom: 14pt;
+}
+h3 { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10pt; font-weight: 700; margin-top: 18pt; margin-bottom: 6pt; }
+p { margin: 0 0 10pt 0; }
+ol { margin: 0 0 10pt 0; padding-left: 18pt; }
+li { margin-bottom: 4pt; }
+
+/* Verdict banner */
+.verdict-banner { padding: 14pt 16pt; margin-bottom: 18pt; }
+.verdict-banner.pass  { background: #e8f5e9; border-left: 4pt solid #2e7d32; }
+.verdict-banner.flagged { background: #ffebee; border-left: 4pt solid #c62828; }
+.verdict-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13pt; font-weight: 700; }
+.verdict-label.pass    { color: #2e7d32; }
+.verdict-label.flagged { color: #c62828; }
+.verdict-sub { font-size: 9pt; color: #555; margin-top: 5pt; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 9.5pt; margin-bottom: 16pt; }
+th {
+  background: #1a1a1a; color: #fff;
+  font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 8pt; font-weight: 700;
+  letter-spacing: 0.5pt; text-align: left; padding: 6pt 8pt;
+}
+td { padding: 5pt 8pt; border-bottom: 0.5pt solid #e8e8e8; vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+.num { font-family: 'Courier New', monospace; }
+.metric-right { text-align: right; font-weight: 700; font-family: 'Helvetica Neue', Arial, sans-serif; }
+.sev-high   { color: #c62828; font-weight: 700; font-family: 'Helvetica Neue', Arial, sans-serif; }
+.sev-medium { color: #e65100; font-weight: 700; font-family: 'Helvetica Neue', Arial, sans-serif; }
+.sev-low    { color: #1565c0; font-family: 'Helvetica Neue', Arial, sans-serif; }
+
+/* Sign-off */
+.signoff { border: 1pt solid #1a1a1a; padding: 18pt 20pt; margin-top: 28pt; break-inside: avoid; }
+.big-verdict {
+  font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 30pt; font-weight: 700;
+  letter-spacing: 4pt; text-align: center; padding: 8pt 0; margin-bottom: 12pt;
+}
+.big-verdict.pass    { color: #2e7d32; }
+.big-verdict.flagged { color: #c62828; }
+.signoff-meta { display: flex; justify-content: space-between; font-size: 9pt; color: #555; margin-top: 10pt; }
+.disclaimer { font-size: 7.5pt; color: #aaa; margin-top: 24pt; line-height: 1.5; }
+
+/* Bob narrative */
+.bob-narrative { border-left: 3pt solid #b45309; padding-left: 14pt; margin: 24pt 0; }
+.bob-headline { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13pt; font-weight: 700; color: #b45309; margin-bottom: 8pt; }
+.bob-confidence { font-size: 8pt; color: #aaa; margin-top: 8pt; }
+.remediation { color: #b45309; }
+
+/* Engineer sign-off fields */
+.signoff-fields { margin-top: 18pt; border-top: 0.5pt solid #e8e8e8; padding-top: 14pt; }
+.signoff-field { display: flex; gap: 12pt; margin-bottom: 10pt; font-size: 9pt; }
+.signoff-field-label { font-weight: 700; min-width: 130pt; }
+.signoff-field-line { border-bottom: 0.5pt solid #1a1a1a; flex: 1; }
+
+/* Affected systems / blast radius */
+.blast-radius { margin-top: 24pt; border-left: 3pt solid #c62828; padding-left: 14pt; }
+.blast-radius.low { border-color: #e65100; }
+.blast-radius.safe { border-color: #2e7d32; }
+.blast-radius-score { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 22pt;
+                      font-weight: 700; color: #c62828; }
+.blast-radius-score.low { color: #e65100; }
+.blast-radius-score.safe { color: #2e7d32; }
+.blast-tag { display: inline-block; font-family: "Courier New", monospace; font-size: 8pt;
+             padding: 2pt 6pt; margin: 2pt; background: #f5f5f5;
+             border: 0.5pt solid #ccc; }
+</style>
+</head>
+<body>
+
+{%- set v = result.diff.verdict -%}
+{%- set cls = "pass" if v == "PASS" else "flagged" -%}
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-wordmark">Refinery</div>
+  <div class="cover-program">{{ result.original_file }}</div>
+  <div class="cover-subtitle">Independent Verification &amp; Validation</div>
+  <div class="cover-meta">
+    <div>AI-Modified: {{ result.modified_file }}</div>
+    <div>Reference: {{ result.ref_id }}</div>
+    <div>Date: {{ result.date }}</div>
+    {% if result.client_ref %}<div>Client: {{ result.client_ref }}</div>{% endif %}
+    <div>Refinery {{ result.refinery_version }}</div>
+  </div>
+  <div class="cover-badge {{ cls }}">{{ v }}</div>
+</div>
+
+<!-- 1. EXECUTIVE SUMMARY -->
+<h2>1. Executive Summary</h2>
+
+<div class="verdict-banner {{ cls }}">
+  {% if v == "PASS" %}
+  <div class="verdict-label pass">Semantically Equivalent - Approved for Deployment</div>
+  <div class="verdict-sub">No semantic divergences detected. The AI-modified program is functionally identical to the original.</div>
+  {% else %}
+  <div class="verdict-label flagged">Semantic Divergence Detected - Deployment Blocked</div>
+  <div class="verdict-sub">One or more semantic changes require review before this modification can be approved for production.</div>
+  {% endif %}
+</div>
+
+<table>
+  <tr><td>CPU time reduction</td><td class="metric-right num">{{ result.diff.reduction_pct }}%</td></tr>
+  <tr>
+    <td>Est. saving per 100 MIPS/month</td>
+    <td class="metric-right num" style="color:#2e7d32">${{ "{:,}".format((result.diff.reduction_pct * 300) | int) }}</td>
+  </tr>
+  <tr><td>Semantic checks run</td><td class="metric-right num">{{ result.diff.checks_run | default(6) }}</td></tr>
+  <tr>
+    <td>Divergences found</td>
+    <td class="metric-right num" {% if result.diff.semantic_changes %}style="color:#c62828"{% else %}style="color:#2e7d32"{% endif %}>
+      {{ result.diff.semantic_changes | length }}
+    </td>
+  </tr>
+  {% if result.impact %}
+  <tr>
+    <td>Estate blast radius score</td>
+    <td class="metric-right num"
+        {% if result.impact.blast_radius_score > 50 %}style="color:#c62828;font-weight:700"
+        {% elif result.impact.blast_radius_score > 0 %}style="color:#e65100"{% endif %}>
+      {{ result.impact.blast_radius_score }}/100
+      ({{ result.impact.affected_systems | length }} systems)
+    </td>
+  </tr>
+  {% endif %}
+</table>
+
+<!-- 2. METHODOLOGY -->
+<h2>2. Methodology</h2>
+
+<h3>Execution Analysis</h3>
+<p>Both programs are executed through Refinery's SyntheticRunner, a calibrated emulator that derives instruction counts, memory utilisation, and I/O operation counts from COBOL AST features. Telemetry is deterministic for a given source. In production engagements, Refinery runs against a live Hercules/MVS z/Architecture emulator for hardware-accurate SMF telemetry.</p>
+
+<h3>Semantic Analysis</h3>
+<ol>
+  <li><strong>COMPUTE Expression Analysis:</strong> All COMPUTE arithmetic statements are extracted and compared. Any change in a COMPUTE expression is flagged at HIGH severity.</li>
+  <li><strong>Data Type Declarations:</strong> PIC clause declarations are compared field by field. Storage-format changes that preserve precision (PIC 9 to COMP-3) are LOW severity. Field size changes are HIGH severity.</li>
+  <li><strong>Verb Count Analysis:</strong> PERFORM, SEARCH, and SORT verb counts are compared. Control-flow divergence is MEDIUM severity.</li>
+</ol>
+
+<h3>GnuCOBOL Proxy Limitations</h3>
+<p>The equivalence check (check 6) runs on x86 hardware under GnuCOBOL, not a native z/Architecture environment. Known divergences from real mainframe execution: (a) <strong>EBCDIC/ASCII</strong> — GnuCOBOL uses ASCII; character comparisons against EBCDIC literals may produce different results. (b) <strong>Packed decimal (COMP-3)</strong> — edge cases in packed decimal arithmetic and 0C7 abend conditions differ between GnuCOBOL and z/Architecture instruction execution. (c) <strong>Floating-point rounding</strong> — GnuCOBOL uses IEEE 754 (x86); z/Architecture uses IBM hex floating point (HFP), which can diverge for COMP-1/COMP-2 fields. (d) <strong>I/O simulation</strong> — VSAM and DASD I/O is simulated; sequential file behaviour is representative, not bit-identical. Where Hercules/MVS telemetry is available (RealHerculesRunner), these limitations do not apply.</p>
+
+<h3>Verdict Criteria</h3>
+<p>PASS requires all checks clean. Any HIGH or MEDIUM finding blocks deployment. LOW-only findings permit approval.</p>
+
+{% if narrative %}
+<!-- BOB'S RISK NARRATIVE -->
+<div class="bob-narrative">
+  <h2>Bob's Risk Narrative</h2>
+  <p class="bob-headline">{{ narrative.headline }}</p>
+  <p>{{ narrative.executive_summary }}</p>
+  {% if narrative.risk_items %}
+  <ul>
+    {% for item in narrative.risk_items %}<li>{{ item }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+  <p class="remediation"><strong>Remediation:</strong> {{ narrative.remediation }}</p>
+  <p class="bob-confidence">Bob confidence: {{ (narrative.confidence * 100) | int }}%</p>
+</div>
+{% endif %}
+
+<!-- 3. EXECUTION EVIDENCE -->
+<h2>3. Execution Evidence</h2>
+
+<h3>CPU Performance</h3>
+<table>
+  <tr><th>Metric</th><th>Original</th><th>AI-Modified</th><th>Change</th></tr>
+  <tr>
+    <td>CPU time (microseconds)</td>
+    <td class="num">{{ "{:,}".format(result.diff.cpu_before_us) }}</td>
+    <td class="num">{{ "{:,}".format(result.diff.cpu_after_us) }}</td>
+    <td class="num" {% if result.diff.reduction_pct > 0 %}style="color:#2e7d32"{% endif %}>
+      {% if result.diff.reduction_pct > 0 %}-{% else %}+{% endif %}{{ result.diff.reduction_pct | abs }}%
+    </td>
+  </tr>
+</table>
+
+<h3>AST Feature Comparison</h3>
+<table>
+  <tr><th>Feature</th><th>Original</th><th>AI-Modified</th></tr>
+  {% for key, label in [
+    ("loc",                   "Lines of code"),
+    ("compute_verb_count",    "COMPUTE verbs"),
+    ("perform_depth",         "PERFORM nesting depth"),
+    ("search_verb_count",     "SEARCH verbs"),
+    ("sort_verb_count",       "SORT verbs"),
+    ("working_storage_bytes", "Working storage (bytes)"),
+    ("file_section_count",    "File section entries"),
+  ] %}
+  <tr>
+    <td>{{ label }}</td>
+    <td class="num">{{ result.diff.features_original.get(key, "-") }}</td>
+    <td class="num">{{ result.diff.features_modified.get(key, "-") }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<!-- 3b. EXCEPTION HANDLER INTEGRITY -->
+<h3>Exception Handler Integrity</h3>
+{%- set handler_types = ["ERROR_HANDLER_REMOVED", "EXCEPTION_DIVERGENCE"] -%}
+{%- set handler_changes = result.diff.semantic_changes | selectattr("change_type", "in", handler_types) | list -%}
+{% if not handler_changes %}
+<p style="color:#2e7d32;">
+  <strong>PASS</strong> — All exception handlers (ON SIZE ERROR, INVALID KEY, AT END, ON OVERFLOW) are present and produce equivalent outputs under adversarial inputs. No error-handling logic was removed or altered by the AI modification.
+</p>
+{% else %}
+<p style="color:#c62828;font-weight:bold;">
+  FLAGGED — {{ handler_changes | length }} exception handler finding(s) detected. Banks rely on error handlers written into COBOL since the 1970s; their removal by AI tooling is a critical deployment risk.
+</p>
+<table>
+  <tr><th>Severity</th><th>Type</th><th>Location</th><th>Detail</th></tr>
+  {% for c in handler_changes %}
+  <tr>
+    <td class="sev-{{ c.severity | lower }}">{{ c.severity }}</td>
+    <td>{{ c.change_type }}</td>
+    <td class="num">{{ c.location }}</td>
+    <td class="num">{{ c.original }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<!-- 4. DIVERGENCE LOG -->
+<h2>4. Divergence Log</h2>
+
+{% if result.diff.semantic_changes %}
+<table>
+  <tr><th>Severity</th><th>Check</th><th>Location</th><th>Original</th><th>Modified</th></tr>
+  {% for c in result.diff.semantic_changes %}
+  <tr>
+    <td class="sev-{{ c.severity | lower }}">{{ c.severity }}</td>
+    <td>{{ c.change_type }}</td>
+    <td class="num">{{ c.location }}</td>
+    <td class="num">{{ c.original }}</td>
+    <td class="num">{{ c.modified }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p style="color:#2e7d32;font-style:italic;">No divergences detected. All semantic checks passed.</p>
+{% endif %}
+
+
+{% if result.impact %}
+<!-- 4b. AFFECTED SYSTEMS -->
+<h2>4b. Affected Systems &#8212; Estate Blast Radius</h2>
+
+{%- set score = result.impact.blast_radius_score -%}
+{%- set score_cls = "safe" if score < 30 else ("low" if score < 60 else "") -%}
+
+<div class="blast-radius {{ score_cls }}">
+  <span class="blast-radius-score {{ score_cls }}">{{ score }}/100</span>
+  &nbsp;&nbsp;
+  <span style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:11pt;color:#555;">
+    {{ result.impact.affected_systems | length }} systems affected by this change
+  </span>
+</div>
+
+<p style="margin-top:12pt;">
+  <strong>{{ result.impact.program }}</strong> is called by
+  {{ result.impact.direct_callers | length }} JCL job(s) / program(s),
+  shares copybook(s) with {{ result.impact.copybook_siblings | length }} sibling program(s),
+  and co-accesses {{ result.impact.vsam_co_accessors | length }} VSAM dataset(s) with
+  other programs. The following systems must be verified before deployment.
+</p>
+
+{% if result.impact.batch_jobs_at_risk %}
+<h3>Batch Jobs at Risk</h3>
+<p>
+  {% for job in result.impact.batch_jobs_at_risk %}
+  <span class="blast-tag">{{ job }}</span>
+  {% endfor %}
+</p>
+{% endif %}
+
+<table>
+  <tr><th>System</th><th>Relationship</th></tr>
+  {% for sys in result.impact.direct_callers %}
+  <tr><td class="num">{{ sys }}</td><td>Direct caller (JCL_EXEC or CALL)</td></tr>
+  {% endfor %}
+  {% for sys in result.impact.copybook_siblings %}
+  <tr><td class="num">{{ sys }}</td><td>Copybook sibling &#8212; shares data layout</td></tr>
+  {% endfor %}
+  {% for sys in result.impact.vsam_co_accessors %}
+  {% if sys not in result.impact.direct_callers and sys not in result.impact.copybook_siblings %}
+  <tr><td class="num">{{ sys }}</td><td>VSAM co-accessor &#8212; reads/writes same dataset</td></tr>
+  {% endif %}
+  {% endfor %}
+  {% for sys in result.impact.transitive_callers %}
+  {% if sys not in result.impact.direct_callers %}
+  <tr><td class="num">{{ sys }}</td><td>Transitive caller</td></tr>
+  {% endif %}
+  {% endfor %}
+</table>
+
+{% if score > 50 %}
+<p style="color:#c62828;font-weight:700;">
+  &#9888; Blast radius score exceeds threshold (50). CRO sign-off required before deployment.
+</p>
+{% endif %}
+
+{% endif %}
+
+<!-- 5. VERDICT + SIGN-OFF -->
+<h2>5. Verdict &amp; Sign-off</h2>
+
+<div class="signoff">
+  <div class="big-verdict {{ cls }}">{{ v }}</div>
+
+  {% if v == "PASS" %}
+  <p style="text-align:center;font-size:10pt;color:#555;">
+    The AI-modified program <strong>{{ result.modified_file }}</strong> is semantically equivalent to
+    <strong>{{ result.original_file }}</strong> and is certified for deployment.
+  </p>
+  {% else %}
+  <p style="text-align:center;font-size:10pt;color:#555;">
+    The AI-modified program <strong>{{ result.modified_file }}</strong> contains semantic divergences from
+    <strong>{{ result.original_file }}</strong>. Manual review and remediation are required before deployment.
+  </p>
+  {% endif %}
+
+  <div class="signoff-meta">
+    <span><strong>Reference:</strong> {{ result.ref_id }}</span>
+    <span><strong>Date:</strong> {{ result.date }}</span>
+    <span><strong>Refinery:</strong> {{ result.refinery_version }}</span>
+  </div>
+  {% if result.client_ref %}
+  <div class="signoff-meta"><span><strong>Client Reference:</strong> {{ result.client_ref }}</span></div>
+  {% endif %}
+
+  <div class="signoff-fields">
+    <div class="signoff-field">
+      <span class="signoff-field-label">Engineer sign-off:</span>
+      <span class="signoff-field-line"></span>
+    </div>
+    <div class="signoff-field">
+      <span class="signoff-field-label">Date:</span>
+      <span class="signoff-field-line"></span>
+    </div>
+    <div class="signoff-field">
+      <span class="signoff-field-label">Change Request #:</span>
+      <span class="signoff-field-line"></span>
+    </div>
+    <div class="signoff-field">
+      <span class="signoff-field-label">ECM Archive ref:</span>
+      <span class="signoff-field-line"></span>
+    </div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  This report was generated automatically by Refinery {{ result.refinery_version }}. Results are based on AST-derived synthetic telemetry and static semantic analysis of COBOL source code. This report does not constitute legal, regulatory, or financial advice and should be reviewed by a qualified engineer before deployment decisions are made. In production engagements, execution evidence is derived from hardware-accurate SMF telemetry via a live Hercules/MVS z/Architecture emulator.
+</div>
+
+</body>
+</html>

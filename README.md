@@ -1,0 +1,62 @@
+# Refinery — AI Change Contract Enforcer
+
+> Built on IBM Bob · IBM Bob Hackathon 2026
+
+Refinery is an independent verification and validation engine for AI-modified COBOL. When IBM Bob refactors legacy COBOL code, Refinery runs 8 verification layers to prove the change is semantically equivalent — then maps the blast radius across the entire estate before a single line ships.
+
+## What it does
+
+1. **IBM Bob modifies COBOL** — optimises, refactors, or fixes a COBOL program
+2. **Refinery audits the change** — 8-layer IV&V: arithmetic, data types, control flow, memory layout, call graph, compiled output, error paths, I/O behaviour
+3. **Blast radius analysis** — traces every `CALL`, `COPY`, `ASSIGN TO`, JCL `EXEC PGM` and `DSN` reference to map downstream impact
+4. **FLAGGED or PASS verdict** — with a signed PDF change contract and SHA-256 chain of custody
+5. **CRO sign-off** — governance portal where the Chief Risk Officer reviews and approves before deployment
+
+## Running locally
+
+### Streamlit app (main demo)
+
+```bash
+pip install uv
+uv sync
+uv run streamlit run streamlit_app/app.py
+```
+
+### CRO Governance Portal
+
+```bash
+uv run uvicorn portal.main:app --reload --port 8001
+```
+
+Open http://localhost:8001 — login with `cro / refinery2026`
+
+### MCP Server (IBM Bob integration)
+
+```bash
+uv run python mcp_server.py
+```
+
+## Project structure
+
+```
+audit/          8-layer verification engine
+bob/            IBM Bob integration (narrator, RAG, providers)
+estate/         Blast radius analyser — traces cross-system impact
+parser/         COBOL AST parser
+emulator/       Synthetic COBOL execution runner
+streamlit_app/  Main demo UI
+portal/         CRO Governance Portal (FastAPI)
+mcp_server.py   MCP server for Bob IDE integration
+```
+
+## Tech stack
+
+- Python 3.11+, FastAPI, Streamlit
+- IBM Bob (Granite) via MCP
+- tree-sitter for COBOL AST parsing
+- WeasyPrint for PDF change contracts
+- SQLite for governance audit trail
+
+---
+
+*Submitted to the IBM Bob Hackathon, May 2026.*

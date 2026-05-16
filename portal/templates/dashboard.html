@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="portal-body">
+  <aside>
+    <div class="aside-section" style="margin-bottom:28px;">
+      <div class="aside-label">Views</div>
+      <div class="aside-item active">Dashboard</div>
+      <div class="aside-item">All Audits</div>
+      <div class="aside-item">Certificates</div>
+    </div>
+    <div class="aside-section">
+      <div class="aside-label">Filter</div>
+      <div class="aside-item" onclick="filterAudits('FLAGGED')">FLAGGED only</div>
+      <div class="aside-item" onclick="filterAudits(null)">All verdicts</div>
+    </div>
+  </aside>
+  <main>
+    <div class="page-title">Audit Dashboard</div>
+    <div class="page-sub" id="page-sub">Loading...</div>
+    <div class="kpi-grid" id="kpi-grid"></div>
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">Recent Audits</div>
+        <div style="font-family:monospace;font-size:10px;color:#888;border:1px solid #E6E3DA;padding:4px 12px;border-radius:2px;cursor:pointer;" onclick="exportCsv()">Export CSV</div>
+      </div>
+      <table>
+        <thead><tr>
+          <th>Program</th><th>Date</th>
+          <th>Verdict</th><th>Risk</th><th>Blast Radius</th><th>Signature</th><th>Review</th>
+        </tr></thead>
+        <tbody id="audit-table-body"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+{% endblock %}

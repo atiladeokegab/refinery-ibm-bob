@@ -1,0 +1,51 @@
+# Dockerfile.pool-server — HerculesPool HTTP server
+#
+# Build:
+#   docker build -f emulator/Dockerfile.pool-server -t refinery-pool-server .
+#
+# Run (requires DASD image mounted at /mvs):
+#   docker run -p 9000:9000 \
+#     -v /path/to/mvs-tk5:/mvs:ro \
+#     -e BASE_CONF=/app/emulator/config/hercules_template.conf \
+#     -e BASE_DASD=/mvs/dasd/work01.290 \
+#     refinery-pool-server
+
+FROM python:3.11-slim
+
+# Install Hercules (SDL Hyperion) from apt — available in Debian bookworm backports.
+# We install the system package so pool slots can spawn hercules subprocesses.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        hercules \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy project metadata first for layer caching
+COPY pyproject.toml ./
+
+# Install project dependencies (no dev group, no editable install)
+RUN pip install --no-cache-dir \
+        "fastapi>=0.111" \
+        "uvicorn[standard]>=0.30" \
+        "pydantic>=2.0" \
+        "httpx>=0.27" \
+        "numpy>=1.26"
+
+# Copy source
+COPY emulator/ ./emulator/
+COPY env/       ./env/
+COPY parser/    ./parser/
+COPY api/       ./api/
+
+# Pool server env defaults (override at runtime)
+ENV POOL_SIZE=2
+ENV SERVER_PORT=9000
+# BASE_CONF and BASE_DASD must be set at runtime
+
+EXPOSE 9000
+
+HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:9000/health', timeout=4)"
+
+ENTRYPOINT ["python", "-m", "uvicorn", "emulator.pool_server:app", \
+            "--host", "0.0.0.0", "--port", "9000", "--workers", "1"]
