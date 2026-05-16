@@ -108,7 +108,7 @@ elif "s_orig" in st.session_state:
 
 # ── Show COBOL files inline ────────────────────────────────────────
 if orig_path and mod_path:
-    with st.expander("View COBOL files being compared", expanded=False):
+    with st.expander("COBOL files being compared", expanded=True):
         c1, c2 = st.columns(2)
         def _cobol_block(label: str, text: str) -> None:
             st.caption(label)
