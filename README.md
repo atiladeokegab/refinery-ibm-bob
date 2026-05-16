@@ -1,48 +1,48 @@
-# Refinery — AI Change Contract Enforcer
+# Refinery
 
-> Built on IBM Bob · IBM Bob Hackathon 2026
+IBM Bob modifies the COBOL. Refinery checks the work.
 
-Refinery is an independent verification and validation engine for AI-modified COBOL. When IBM Bob refactors legacy COBOL code, Refinery runs 8 verification layers to prove the change is semantically equivalent — then maps the blast radius across the entire estate before a single line ships.
+Built for the IBM Bob Hackathon 2026.
 
 ---
 
-## The workflow
+## How it works
 
-### 1. IBM Bob modifies the COBOL
+### Bob modifies the COBOL
 
-Bob optimises, refactors, or fixes a COBOL program directly in the IDE. The moment Bob completes a task, Refinery intercepts the change and runs its audit pipeline. If the change is unsafe, Refinery surfaces the verdict immediately — the **FLAGGED — risk score 100/100** banner appears inline so Bob and the developer see it before anything ships.
+Bob optimises or refactors a COBOL program in the IDE. Refinery intercepts the change and runs its audit pipeline. If something is wrong, the verdict appears immediately — FLAGGED with a risk score — before anything gets committed.
 
-![IBM Bob IDE session — Refinery flags a risky change in real time](images/Screenshot%202026-05-16%20213031.png)
+![IBM Bob IDE — Refinery flags a risky change in real time](images/Screenshot%202026-05-16%20213031.png)
 
-### 2. Refinery audits the change
+### The audit
 
-8 verification layers run automatically: arithmetic equivalence, data types, control flow, memory layout, call graph, compiled output, error paths, and I/O behaviour. Every flagged change gets a risk score and a signed PDF change contract.
+Eight checks run: arithmetic equivalence, data types, control flow, memory layout, call graph, compiled output, error paths, and I/O behaviour. Each check either passes or flags. A flagged change gets a PDF change contract with a SHA-256 hash for chain of custody.
 
-### 3. The feedback loop — Bob learns from every rejection
+### The feedback loop
 
-Every FLAGGED verdict and every CRO rejection is written back into Bob's RAG knowledge base. The next time Bob touches the same program or a similar pattern, it has the full history of what failed and why:
+Every flagged verdict and every CRO rejection goes back into Bob's RAG knowledge base. Next time Bob touches the same program or a similar pattern, it has the history of what failed and why:
 
-- **What Bob changed** — the exact transformation that was flagged
-- **Why Refinery rejected it** — which of the 8 layers caught the drift and what the semantic difference was
-- **Why the CRO rejected it** — the stated reason from the sign-off modal (e.g. "data type boundary violated on COMP-3 field", "blast radius exceeds threshold without mitigation plan")
+- What the change was and which check caught it
+- What the semantic difference was
+- Why the CRO rejected it (e.g. "data type boundary violated on COMP-3 field")
 
-This means Bob gets progressively safer over time on your specific estate — it is not a generic model but one that has been calibrated against your organisation's actual compliance failures.
+Bob does not stay generic. It gets progressively more accurate on your specific estate because it is learning from your actual compliance failures, not someone else's.
 
-### 4. CRO Governance Dashboard
+### Governance dashboard
 
-Every audit lands in the governance portal. The Chief Risk Officer sees a live feed of all changes, verdicts, blast radius scores, and sign-off status.
+Every audit lands in the governance portal. The CRO sees verdicts, risk scores, blast radius scores, and sign-off status.
 
 ![Refinery CRO Governance Portal — Audit Dashboard](images/Screenshot%202026-05-16%20213315.png)
 
-### 5. CRO Sign-off
+### CRO sign-off
 
-When blast radius exceeds the threshold, the CRO must approve before the change can ship. The sign-off is immutable — the record locks once submitted. The reason given by the CRO is fed back into Bob's knowledge base so future changes avoid the same failure mode.
+When blast radius exceeds the threshold, the CRO must approve before the change ships. The record locks once submitted. The reason given goes back into Bob's knowledge base so the same mistake does not get made twice.
 
 ![CRO Sign-off modal — blast radius 33, 3 systems affected](images/Screenshot%202026-05-16%20213328.png)
 
 ---
 
-## Running locally
+## Running it
 
 ### Streamlit app (main demo)
 
@@ -52,15 +52,15 @@ uv sync
 uv run streamlit run streamlit_app/app.py
 ```
 
-### CRO Governance Portal
+### CRO portal
 
 ```bash
 uv run uvicorn portal.main:app --reload --port 8001
 ```
 
-Open http://localhost:8001 — login with `cro / refinery2026`
+http://localhost:8001 — login: `cro / refinery2026`
 
-### MCP Server (IBM Bob integration)
+### MCP server (Bob IDE integration)
 
 ```bash
 uv run python mcp_server.py
@@ -68,29 +68,27 @@ uv run python mcp_server.py
 
 ---
 
-## Project structure
+## Structure
 
 ```
-audit/          8-layer verification engine
-bob/            IBM Bob integration (narrator, RAG, providers)
-  bob/rag/      Knowledge base — stores past failures and CRO rejections
-estate/         Blast radius analyser — traces cross-system impact
+audit/          verification engine (8 checks)
+bob/            IBM Bob integration and RAG knowledge base
+estate/         blast radius — traces cross-system impact
 parser/         COBOL AST parser
-emulator/       Synthetic COBOL execution runner
-streamlit_app/  Main demo UI
-portal/         CRO Governance Portal (FastAPI)
-mcp_server.py   MCP server for Bob IDE integration
+emulator/       synthetic COBOL runner
+streamlit_app/  demo UI
+portal/         CRO governance portal (FastAPI)
+mcp_server.py   MCP server for Bob IDE
 ```
 
-## Tech stack
+## Stack
 
 - Python 3.11+, FastAPI, Streamlit
 - IBM Bob (Granite) via MCP
-- tree-sitter for COBOL AST parsing
+- tree-sitter for COBOL parsing
 - WeasyPrint for PDF change contracts
 - SQLite for governance audit trail
-- RAG (retrieval-augmented generation) for Bob's compliance memory
 
 ---
 
-*Submitted to the IBM Bob Hackathon, May 2026.*
+*IBM Bob Hackathon, May 2026.*
