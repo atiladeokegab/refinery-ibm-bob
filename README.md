@@ -169,3 +169,11 @@ vscode-extension/  VS Code extension — inline verdicts in the editor
 ---
 
 *IBM Bob Hackathon, May 2026.*
+
+---
+
+## Intellectual property
+
+© 2026 Atilade Gabriel Oke. All rights reserved.
+
+All code, design, documentation, and concepts in this repository are the original intellectual property of Atilade Gabriel Oke. This work is shared for demonstration and evaluation purposes only. It is not licensed for commercial use, reproduction, distribution, or derivative works without express written permission from the author.
