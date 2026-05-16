@@ -16,6 +16,35 @@ Refinery captures it. Every flag, every CRO rejection, every "this is wrong beca
 
 ---
 
+## Product flow
+
+```mermaid
+flowchart TD
+    DEV([Developer]) --> BOB[IBM Bob IDE\nrefactors COBOL]
+    BOB -->|change detected| MCP[Refinery MCP Server]
+    MCP --> AUDIT[Audit Engine\n8 verification checks]
+    AUDIT --> VSCODE[VS Code Extension\ninline verdict]
+    AUDIT --> V{Verdict}
+
+    V -->|PASS| PDF[PDF Change Contract\nSHA-256 sealed]
+    V -->|FLAGGED| RAG[(Bob Knowledge Base\nrecords failure reason)]
+
+    PDF --> PORTAL[CRO Governance Portal]
+    PORTAL --> CRO{CRO decision}
+
+    CRO -->|Approved| DEPLOY([Deployment proceeds])
+    CRO -->|Rejected + reason| RAG
+
+    RAG -->|calibrates future changes| BOB
+
+    style RAG fill:#1a1a18,color:#00D46A,stroke:#00D46A
+    style V fill:#2a2a28,color:#F0EDE5,stroke:#3a3a38
+    style CRO fill:#2a2a28,color:#F0EDE5,stroke:#3a3a38
+    style DEPLOY fill:#003d20,color:#00D46A,stroke:#00D46A
+```
+
+---
+
 ## How it works
 
 ### Bob modifies the COBOL
