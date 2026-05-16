@@ -57,7 +57,18 @@ Bob optimises or refactors a COBOL program in the IDE. Refinery intercepts the c
 
 ### The audit
 
-Eight checks run: arithmetic equivalence, data types, control flow, memory layout, call graph, compiled output, error paths, and I/O behaviour. Each check either passes or flags. A flagged change gets a PDF change contract with a SHA-256 hash for chain of custody.
+Eight checks run. Each either passes or flags. A flagged change gets a PDF change contract with a SHA-256 hash for chain of custody.
+
+| Check | What it asks |
+|---|---|
+| Arithmetic equivalence | Does the calculation produce the same result? Catches COMPUTE rewrites that introduce rounding drift or precision loss. |
+| Data types | Are PIC clauses, COMP-3 fields, and decimal precision unchanged? A type change that looks harmless can silently corrupt downstream data. |
+| Control flow | Does the program follow the same logical path? Verifies that IF/ELSE branches and PERFORM loops behave identically. |
+| Memory layout | Are field boundaries and offsets the same? Checks REDEFINES clauses and copybook layouts that other programs depend on. |
+| Call graph | Does it call the same programs in the same order? A reordered or removed CALL can break dependent systems that expect a specific sequence. |
+| Compiled output | Does the compiled code produce the same results across all test inputs? Runs the original and modified versions side by side. |
+| Error paths | Do error and exception conditions behave the same? Checks ON SIZE ERROR, NOT ON SIZE ERROR, and other condition handlers. |
+| I/O behaviour | Are file reads and writes unchanged? Verifies READ, WRITE, and REWRITE statements and VSAM dataset access patterns. |
 
 ### Blast radius
 
