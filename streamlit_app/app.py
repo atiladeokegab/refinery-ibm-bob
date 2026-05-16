@@ -106,6 +106,17 @@ elif "s_orig" in st.session_state:
     orig_path = st.session_state["s_orig"]
     mod_path  = st.session_state["s_mod"]
 
+# ── Show COBOL files inline ────────────────────────────────────────
+if orig_path and mod_path:
+    with st.expander("View COBOL files being compared", expanded=False):
+        c1, c2 = st.columns(2)
+        with c1:
+            st.caption("Original (pre-Bob)")
+            st.code(Path(orig_path).read_text(errors="replace"), language="text")
+        with c2:
+            st.caption("AI-Modified (post-Bob)")
+            st.code(Path(mod_path).read_text(errors="replace"), language="text")
+
 # ── Right column: results ──────────────────────────────────────────
 with col_out:
     if run and orig_path and mod_path:
