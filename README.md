@@ -6,6 +6,16 @@ Built for the IBM Bob Hackathon 2026.
 
 ---
 
+## The problem
+
+The average COBOL programmer is over 55. These systems process $3 trillion a day — payroll, clearing, insurance, pensions — and the people who understand them are retiring faster than they can be replaced. The knowledge of why a particular program works the way it does often lives only in one person's head. When that person leaves, it goes with them.
+
+AI modernisation tools like IBM Bob can read the code and suggest improvements. But the code is only half the picture. The unwritten rules — the tolerance thresholds, the edge cases that got hardcoded after an incident in 1987, the reason this field is COMP-3 and not COMP — those are not in the source file. They are in institutional knowledge that has never been written down.
+
+Refinery is where that knowledge gets captured. Every time Bob makes a change and Refinery flags it, the reason is recorded. Every time a CRO rejects a deployment, the reason is recorded. Over time, Bob stops making the same class of mistake on your estate because Refinery has built a compliance memory specific to your systems, your rules, and your history.
+
+---
+
 ## How it works
 
 ### Bob modifies the COBOL
@@ -66,6 +76,12 @@ http://localhost:8001 — login: `cro / refinery2026`
 uv run python mcp_server.py
 ```
 
+The MCP server exposes Refinery's audit pipeline directly to Bob. Bob calls it after each modification so the verdict is available inside the IDE session without leaving the workflow.
+
+### VS Code extension
+
+The extension surfaces Refinery verdicts inline in the editor. When Bob finishes a change, the risk score and flagged layers appear as diagnostics on the modified file — no context switching to the Streamlit app required.
+
 ---
 
 ## Structure
@@ -79,6 +95,7 @@ emulator/       synthetic COBOL runner
 streamlit_app/  demo UI
 portal/         CRO governance portal (FastAPI)
 mcp_server.py   MCP server for Bob IDE
+vscode-extension/  VS Code extension — inline verdicts in the editor
 ```
 
 ## Stack

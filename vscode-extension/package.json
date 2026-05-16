@@ -1,0 +1,66 @@
+{
+  "name": "refinery-vscode",
+  "displayName": "Refinery",
+  "description": "AI Change Contract Enforcer — automatically audits COBOL changes via IBM Bob",
+  "version": "0.1.0",
+  "publisher": "refinery",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/*.cob",
+    "workspaceContains:**/*.cbl",
+    "workspaceContains:**/*.jcl"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "refinery.openLastContract",
+        "title": "Refinery: Open Last Change Contract"
+      },
+      {
+        "command": "refinery.runAudit",
+        "title": "Refinery: Run Audit on Active File"
+      }
+    ],
+    "configuration": {
+      "title": "Refinery",
+      "properties": {
+        "refinery.serverUrl": {
+          "type": "string",
+          "default": "http://localhost:8080",
+          "description": "URL of the Refinery Governance Server"
+        },
+        "refinery.username": {
+          "type": "string",
+          "default": "admin",
+          "description": "Portal login username"
+        },
+        "refinery.password": {
+          "type": "string",
+          "default": "refinery",
+          "description": "Portal login password"
+        },
+        "refinery.enableEstateAnalysis": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run full estate blast radius analysis on every save"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.9.1",
+    "typescript": "^5.3.0"
+  }
+}
