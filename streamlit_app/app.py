@@ -65,6 +65,12 @@ with col_in:
         label_visibility="collapsed",
     )
 
+    # Auto-load sample on first visit
+    if "s_orig" not in st.session_state:
+        st.session_state["s_orig"] = SAMPLES / "interest_calc_original.cob"
+        st.session_state["s_mod"]  = SAMPLES / "interest_calc_ai_flagged.cob"
+        st.session_state["auto_run"] = True
+
     load_col, run_col = st.columns(2)
     with load_col:
         if st.button("Load sample", use_container_width=True):
@@ -74,10 +80,12 @@ with col_in:
             else:
                 st.session_state["s_orig"] = SAMPLES / "payroll_original.cob"
                 st.session_state["s_mod"]  = SAMPLES / "payroll_ai_pass.cob"
-            st.success("Sample loaded — click Generate Change Contract")
 
     with run_col:
         run = st.button("Generate Change Contract", type="primary", use_container_width=True)
+
+    if st.session_state.pop("auto_run", False):
+        run = True
 
 # ── Resolve file paths ─────────────────────────────────────────────
 orig_path: Path | None = None
