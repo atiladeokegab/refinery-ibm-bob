@@ -24,10 +24,12 @@ st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Serif:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 <style>
   html, body, [class*="css"] { font-family: 'IBM Plex Sans', sans-serif; }
-  .stApp { background: #FDFCF7; }
-  h1, h2, h3 { font-family: 'IBM Plex Serif', serif; color: #111110; }
+  .stApp { background: #0A1628; }
+  section[data-testid="stSidebar"], .stAppViewContainer { background: #0A1628; }
+  h1, h2, h3 { font-family: 'IBM Plex Serif', serif; color: #F0EDE5; }
+  p, label, span, .stMarkdown { color: #C4C0B6; }
   .refinery-brand { font-family: 'IBM Plex Serif', serif; font-style: italic; font-weight: 700;
-                    font-size: 28px; letter-spacing: -0.5px; color: #111110; }
+                    font-size: 28px; letter-spacing: -0.5px; color: #F0EDE5; }
   .badge-flag { background: #C0392B22; color: #C0392B; padding: 6px 14px; border-radius: 3px;
                 font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 14px; }
   .badge-pass { background: #00D46A22; color: #00A854; padding: 6px 14px; border-radius: 3px;
