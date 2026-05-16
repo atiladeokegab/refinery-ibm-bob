@@ -59,6 +59,21 @@ Bob optimises or refactors a COBOL program in the IDE. Refinery intercepts the c
 
 Eight checks run: arithmetic equivalence, data types, control flow, memory layout, call graph, compiled output, error paths, and I/O behaviour. Each check either passes or flags. A flagged change gets a PDF change contract with a SHA-256 hash for chain of custody.
 
+### Blast radius
+
+Knowing a change is semantically correct is not enough. A COBOL estate is not a collection of isolated programs — one file can be called by dozens of batch jobs, shared via copybooks, and write to VSAM datasets that other programs read. A safe change to one program can still break fourteen others.
+
+Refinery traces every `CALL`, `COPY`, `ASSIGN TO`, JCL `EXEC PGM`, and `DSN` reference to build a dependency graph of the estate before anything ships. The result is a blast radius score from 0 to 100. Anything above 50 requires CRO sign-off.
+
+What the score covers:
+
+- Direct callers — programs that `CALL` the changed module
+- Copybook siblings — programs sharing the same copybook layout (mismatched field offsets are a common failure mode)
+- VSAM co-accessors — programs reading or writing the same datasets
+- Batch jobs at risk — JCL jobs that execute the changed program
+
+This is where IBM Bob's full repo view matters. Bob sees the whole estate, not just the file being changed. Refinery uses that context to make the blast radius accurate.
+
 ### The feedback loop
 
 Every flagged verdict and every CRO rejection goes back into Bob's RAG knowledge base. Next time Bob touches the same program or a similar pattern, it has the history of what failed and why:
