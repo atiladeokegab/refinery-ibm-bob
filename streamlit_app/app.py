@@ -110,12 +110,19 @@ elif "s_orig" in st.session_state:
 if orig_path and mod_path:
     with st.expander("View COBOL files being compared", expanded=False):
         c1, c2 = st.columns(2)
+        def _cobol_block(label: str, text: str) -> None:
+            st.caption(label)
+            st.markdown(
+                f"<pre style='background:#0E0E0C;color:#C4C0B6;font-size:11px;"
+                f"padding:12px;border-radius:4px;overflow:auto;max-height:400px;"
+                f"font-family:IBM Plex Mono,monospace;line-height:1.5'>"
+                f"{text.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')}</pre>",
+                unsafe_allow_html=True,
+            )
         with c1:
-            st.caption("Original (pre-Bob)")
-            st.code(Path(orig_path).read_text(errors="replace"), language="text")
+            _cobol_block("Original (pre-Bob)", Path(orig_path).read_text(errors="replace"))
         with c2:
-            st.caption("AI-Modified (post-Bob)")
-            st.code(Path(mod_path).read_text(errors="replace"), language="text")
+            _cobol_block("AI-Modified (post-Bob)", Path(mod_path).read_text(errors="replace"))
 
 # ── Right column: results ──────────────────────────────────────────
 with col_out:

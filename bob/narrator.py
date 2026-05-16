@@ -37,7 +37,7 @@ def _get_provider(name: str) -> BaseProvider:
 
 
 def narrate(result: AuditResult, provider: str | None = None) -> RiskNarrative:
-    provider_name = provider or os.environ.get("BOB_PROVIDER", "ibm_bob")
+    provider_name = provider or os.environ.get("BOB_PROVIDER", "demo")
     d = result.diff
     changes_json = json.dumps(
         [
