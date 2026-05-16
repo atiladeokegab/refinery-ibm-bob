@@ -113,7 +113,7 @@ if orig_path and mod_path:
         def _cobol_block(label: str, text: str) -> None:
             st.caption(label)
             st.markdown(
-                f"<pre style='background:#0E0E0C;color:#C4C0B6;font-size:11px;"
+                f"<pre style='background:#0A1628;color:#C4C0B6;font-size:11px;"
                 f"padding:12px;border-radius:4px;overflow:auto;max-height:400px;"
                 f"font-family:IBM Plex Mono,monospace;line-height:1.5'>"
                 f"{text.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')}</pre>",
