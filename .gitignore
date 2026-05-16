@@ -17,6 +17,7 @@ build/
 *.txt
 !requirements.txt
 !packages.txt
+!pyproject.toml
 
 # Secrets
 .env
