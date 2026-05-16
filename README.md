@@ -30,7 +30,8 @@ flowchart TD
     V -->|FLAGGED| RAG[(Bob Knowledge Base\nrecords failure reason)]
 
     PDF --> PORTAL[CRO Governance Portal]
-    PORTAL --> CRO{CRO decision}
+    PORTAL --> CHAT[CRO Chat\nask Bob in plain English]
+    CHAT -->|grounded in audit context| CRO{CRO decision}
 
     CRO -->|Approved| DEPLOY([Deployment proceeds])
     CRO -->|Rejected + reason| RAG
@@ -41,6 +42,7 @@ flowchart TD
     style V fill:#2a2a28,color:#F0EDE5,stroke:#3a3a38
     style CRO fill:#2a2a28,color:#F0EDE5,stroke:#3a3a38
     style DEPLOY fill:#003d20,color:#00D46A,stroke:#00D46A
+    style CHAT fill:#1a1a18,color:#00D46A,stroke:#00D46A
 ```
 
 ---
@@ -78,6 +80,14 @@ Every audit lands in the governance portal. The CRO sees verdicts, risk scores, 
 When blast radius exceeds the threshold, the CRO must approve before the change ships. The record locks once submitted. The reason given goes back into Bob's knowledge base so the same mistake does not get made twice.
 
 ![CRO Sign-off modal — blast radius 33, 3 systems affected](images/Screenshot%202026-05-16%20213328.png)
+
+### CRO chat
+
+CROs are not engineers. They should not have to read a diff to decide whether a change is safe to ship.
+
+Each audit record in the portal has a chat tab. The CRO opens it, the full audit context is pre-loaded, and they can ask plain English questions: "What systems does this affect?", "Does this change violate DORA Article 16?", "Why was this flagged and not the previous one?" Bob answers using the audit data and the RAG knowledge base — not a generic LLM response, but one grounded in the specific change in front of them.
+
+![CRO chat — asking Bob about SAM2.cob, risk score 100](images/Screenshot%202026-05-16%20215443.png)
 
 ---
 
