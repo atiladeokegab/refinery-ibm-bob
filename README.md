@@ -8,11 +8,11 @@ Built for the IBM Bob Hackathon 2026.
 
 ## The problem
 
-The average COBOL programmer is over 55. These systems process $3 trillion a day — payroll, clearing, insurance, pensions — and the people who understand them are retiring faster than they can be replaced. The knowledge of why a particular program works the way it does often lives only in one person's head. When that person leaves, it goes with them.
+The average COBOL programmer is over 55. The systems they maintain process $3 trillion a day: payroll, clearing, insurance, pensions. The people who understand them are retiring, and there is nobody coming up behind them fast enough.
 
-AI modernisation tools like IBM Bob can read the code and suggest improvements. But the code is only half the picture. The unwritten rules — the tolerance thresholds, the edge cases that got hardcoded after an incident in 1987, the reason this field is COMP-3 and not COMP — those are not in the source file. They are in institutional knowledge that has never been written down.
+IBM Bob can read the code and suggest changes. But the code is not the whole picture. The tolerance thresholds, the edge cases that got hardcoded after an incident in 1987, the reason this field is COMP-3 and not COMP: none of that is in the source file. It lives in one person's head. When that person leaves, it is gone.
 
-Refinery is where that knowledge gets captured. Every time Bob makes a change and Refinery flags it, the reason is recorded. Every time a CRO rejects a deployment, the reason is recorded. Over time, Bob stops making the same class of mistake on your estate because Refinery has built a compliance memory specific to your systems, your rules, and your history.
+Refinery captures it. Every flag, every CRO rejection, every "this is wrong because" gets recorded and fed back into Bob's knowledge base. Bob stops repeating the same mistakes on your estate because it now has your history.
 
 ---
 
