@@ -51,9 +51,9 @@ flowchart TD
 
 ### Bob modifies the COBOL
 
-Bob optimises or refactors a COBOL program in the IDE. Refinery intercepts the change and runs its audit pipeline. If something is wrong, the verdict appears immediately — FLAGGED with a risk score — before anything gets committed.
+Bob optimises or refactors a COBOL program in the IDE. Refinery intercepts the change and runs its audit pipeline. If something is wrong, the verdict appears immediately: FLAGGED, with a risk score, before anything gets committed.
 
-![IBM Bob IDE — Refinery flags a risky change in real time](images/Screenshot%202026-05-16%20213031.png)
+![IBM Bob IDE: Refinery flags a risky change in real time](images/Screenshot%202026-05-16%20213031.png)
 
 ### The audit
 
@@ -83,21 +83,21 @@ Bob does not stay generic. It gets progressively more accurate on your specific 
 
 Every audit lands in the governance portal. The CRO sees verdicts, risk scores, blast radius scores, and sign-off status.
 
-![Refinery CRO Governance Portal — Audit Dashboard](images/Screenshot%202026-05-16%20213315.png)
+![Refinery CRO Governance Portal, Audit Dashboard](images/Screenshot%202026-05-16%20213315.png)
 
 ### CRO sign-off
 
 When blast radius exceeds the threshold, the CRO must approve before the change ships. The record locks once submitted. The reason given goes back into Bob's knowledge base so the same mistake does not get made twice.
 
-![CRO Sign-off modal — blast radius 33, 3 systems affected](images/Screenshot%202026-05-16%20213328.png)
+![CRO Sign-off modal, blast radius 33, 3 systems affected](images/Screenshot%202026-05-16%20213328.png)
 
 ### CRO chat
 
 CROs are not engineers. They should not have to read a diff to decide whether a change is safe to ship.
 
-Each audit record in the portal has a chat tab. The CRO opens it, the full audit context is pre-loaded, and they can ask plain English questions: "What systems does this affect?", "Does this change violate DORA Article 16?", "Why was this flagged and not the previous one?" Bob answers using the audit data and the RAG knowledge base — not a generic LLM response, but one grounded in the specific change in front of them.
+Each audit record in the portal has a chat tab. The CRO opens it, the full audit context is pre-loaded, and they can ask plain English questions: "What systems does this affect?", "Does this change violate DORA Article 16?", "Why was this flagged and not the previous one?" Bob answers using the audit data and the RAG knowledge base. The response is grounded in the specific change in front of them, not a generic LLM answer.
 
-![CRO chat — asking Bob about SAM2.cob, risk score 100](images/Screenshot%202026-05-16%20215443.png)
+![CRO chat, asking Bob about SAM2.cob, risk score 100](images/Screenshot%202026-05-16%20215443.png)
 
 ---
 
@@ -117,7 +117,7 @@ uv run streamlit run streamlit_app/app.py
 uv run uvicorn portal.main:app --reload --port 8001
 ```
 
-http://localhost:8001 — login: `cro / refinery2026`
+Open http://localhost:8001 and log in with `cro / refinery2026`
 
 ### MCP server (Bob IDE integration)
 
@@ -129,7 +129,7 @@ The MCP server exposes Refinery's audit pipeline directly to Bob. Bob calls it a
 
 ### VS Code extension
 
-The extension surfaces Refinery verdicts inline in the editor. When Bob finishes a change, the risk score and flagged layers appear as diagnostics on the modified file — no context switching to the Streamlit app required.
+The extension surfaces Refinery verdicts inline in the editor. When Bob finishes a change, the risk score and flagged layers appear as diagnostics on the modified file. No need to open the Streamlit app.
 
 ---
 
