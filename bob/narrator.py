@@ -57,6 +57,7 @@ def narrate(result: AuditResult, provider: str | None = None) -> RiskNarrative:
         risk_score=d.risk_score,
         reduction_pct=d.reduction_pct,
         semantic_changes=changes_json,
+        context="No additional RAG context available.",
     )
     try:
         p = _get_provider(provider_name)

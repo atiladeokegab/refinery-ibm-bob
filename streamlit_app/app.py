@@ -57,11 +57,12 @@ col_in, col_out = st.columns([1, 1], gap="large")
 # ── Left column: inputs ────────────────────────────────────────────
 with col_in:
     st.subheader("Upload COBOL pair")
+    st.caption("Upload your own files, or use a pre-built scenario below.")
     orig_upload = st.file_uploader("Original COBOL (pre-Bob)", type=["cob", "cbl", "txt"], key="orig")
     mod_upload  = st.file_uploader("AI-Modified COBOL (post-Bob)", type=["cob", "cbl", "txt"], key="mod")
 
     st.divider()
-    st.caption("Or load a pre-built scenario")
+    st.caption("Pre-built scenarios")
     scenario = st.radio(
         "scenario",
         ["FLAGGED — COMPUTE drift in interest calculation", "PASS — COMP-3 optimisation"],
