@@ -1,14 +1,6 @@
 services:
   - type: web
-    name: refinery-api
+    name: refinery
     runtime: docker
     dockerfilePath: ./Dockerfile
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: refinery-db
-          property: connectionString
-
-databases:
-  - name: refinery-db
     plan: free
